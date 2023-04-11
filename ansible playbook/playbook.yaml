@@ -1,0 +1,57 @@
+# This YAML file installs Docker and Kubernetes with all the prerequisites
+
+# Update the system
+- name: Update the system
+  apt:
+    update_cache: yes
+
+# Install Docker
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
+
+# Add the current user to the docker group
+- name: Add the current user to the docker group
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+
+# Install Kubernetes
+- name: Install Kubernetes
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+
+# Add Kubernetes GPG key
+- name: Add Kubernetes GPG key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+# Add Kubernetes repository
+- name: Add Kubernetes repository
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+
+# Update the package cache
+- name: Update the package cache
+  apt:
+    update_cache: yes
+
+# Install Kubernetes tools
+- name: Install Kubernetes tools
+  apt:
+    name:
+      - kubectl
+      - kubelet
+      - kubeadm
+      - kubernetes-cni
+    state: present
