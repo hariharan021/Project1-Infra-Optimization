@@ -11,6 +11,7 @@ resource "aws_instance" "instance_1" {
   tags = {
     
     Name        = "Master"
+    
   }
 
 }
