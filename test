@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-web-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-web-app
+  template:
+    metadata:
+      labels:
+        app: my-web-app
+    spec:
+      containers:
+        - name: my-web-app
+          image: siva100/web-app
+          ports:
+            - containerPort: 80
+          resources:
+           limits:
+             cpu: 20m
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-web-app
+spec:
+  selector:
+    app: my-web-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
